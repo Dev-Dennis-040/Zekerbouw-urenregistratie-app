@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icon-32x32.png" type="image/x-icon">
+    <title>Zekerbouw - Uren Calculator</title>
+    <!-- Favicon voor browsers -->
+    <link rel="icon" href="icon-32x32.png" type="image/x-icon">
+    <!-- Extra formaten voor verschillende schermgroottes -->
+    <link rel="icon" href="path/to/logo-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="path/to/logo-192x192.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="path/to/logo-512x512.png" sizes="512x512" type="image/png">
+    <!-- Link naar de CSS en Javascript -->
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <!-- Manifest voor PWA (Progressive Web App) ondersteuning -->
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+</head>
+<body>
+    <div>
+        <div class="logo"><img src="zekerbouw-logo-nieuw.jpg" alt=""></div>
+        <div id="datetime-container">
+            <p id="weeknummer"></p>
+            <p id="datum-en-tijd"></p>
+        </div>
+        
+        <div class="container">
+            
+            <h1>Uren Calculator</h1>
+            <div class="form-group">
+                <label for="datum">Datum:</label>
+                <input type="date" id="datum">
+            </div>  
+            <div class="form-group">
+                <label for="medewerker">Naam Medewerker:</label>
+                <input type="text" id="medewerker" name="medewerker" placeholder="Vul je naam in">
+            </div>
+                      
+            <div class="form-group">
+                <label for="project">Project (locatie):</label>
+                <input type="text" id="project" name="project" placeholder="Vul projectlocatie in">
+            </div>
+
+            <button id="open-werkzaamheden-button">Werkzaamheden invullen</button>
+
+            <!-- Weergave van ingevulde gegevens -->
+            <div id="werkzaamheden-samenvatting" style="display: none; margin-top: 20px;">
+                <h3>Werkzaamheden:</h3>
+                <p id="geselecteerd-hoofdstuk">STABU-code: </p>
+                <p id="werkzaamheden-omschrijving">Werkzaamheden: </p>
+            </div><br>
+            
+            <!-- Modaal voor hoofdstukkeuze -->
+            <div id="hoofdstuk-modal" class="modal">
+                <div class="modal-content">
+                    <h2>Selecteer je hoofd activiteit.</h2><br>
+                    <div id="hoofdstuk-keuzes" >
+                        <label><input type="radio" name="hoofdstuk" value="00 ALGEMEEN"> 00 ALGEMEEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="01 VOOR HET WERK GELDENDE VOORWAARDEN"> 01 VOOR HET WERK GELDENDE VOORWAARDEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="05 BOUWPLAATSVOORZIENINGEN"> 05 BOUWPLAATSVOORZIENINGEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="10 STUT- EN SLOOPWERK"> 10 STUT- EN SLOOPWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="12 GRONDWERK"> 12 GRONDWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="14 BUITENRIOLERING EN DRAINAGE"> 14 BUITENRIOLERING EN DRAINAGE</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="15 TERREINVERHARDINGEN"> 15 TERREINVERHARDINGEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="16 BEPLANTING"> 16 BEPLANTING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="17 TERREININRICHTING"> 17 TERREININRICHTING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="20 FUNDERINGSPALEN EN DAMWANDEN"> 20 FUNDERINGSPALEN EN DAMWANDEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="21 BETONWERK"> 21 BETONWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="22 METSELWERK"> 22 METSELWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="23 VOORAF VERVAARDIGDE STEENACHTIGE ELEMENTEN"> 23 VOORAF VERVAARDIGDE STEENACHTIGE ELEMENTEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="24 RUWBOUWTIMMERWERK"> 24 RUWBOUWTIMMERWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="25 METAALCONSTRUCTIEWERK"> 25 METAALCONSTRUCTIEWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="26 BOUWKUNDIGE KANAALELEMENTEN"> 26 BOUWKUNDIGE KANAALELEMENTEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="30 KOZIJNEN, RAMEN EN DEUREN"> 30 KOZIJNEN, RAMEN EN DEUREN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="31 SYSTEEMBEKLEDINGEN"> 31 SYSTEEMBEKLEDINGEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="32 TRAPPEN EN BALUSTRADEN"> 32 TRAPPEN EN BALUSTRADEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="33 DAKBEDEKKINGEN"> 33 DAKBEDEKKINGEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="34 BEGLAZING"> 34 BEGLAZING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="35 NATUUR- EN KUNSTSTEEN"> 35 NATUUR- EN KUNSTSTEEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="36 VOEGVULLING"> 36 VOEGVULLING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="37 NA-ISOLATIE"> 37 NA-ISOLATIE</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="38 GEVELSCHERMEN"> 38 GEVELSCHERMEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="40 STUKADOORWERK"> 40 STUKADOORWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="41 TEGELWERK"> 41 TEGELWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="42 DEKVLOEREN EN VLOERSYSTEMEN"> 42 DEKVLOEREN EN VLOERSYSTEMEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="43 METAAL- EN KUNSTSTOFWERK"> 43 METAAL- EN KUNSTSTOFWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="44 PLAFOND- EN WANDSYSTEMEN"> 44 PLAFOND- EN WANDSYSTEMEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="45 AFBOUWTIMMERWERK"> 45 AFBOUWTIMMERWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="46 SCHILDERWERK"> 46 SCHILDERWERK</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="47 BINNENINRICHTING"> 47 BINNENINRICHTING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="48 BEHANGWERK, VLOERBEDEKKING EN STOFFERING"> 48 BEHANGWERK, VLOERBEDEKKING EN STOFFERING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="50 DAKGOTEN EN HEMELWATERAFVOEREN"> 50 DAKGOTEN EN HEMELWATERAFVOEREN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="51 BINNENRIOLERING"> 51 BINNENRIOLERING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="52 WATERINSTALLATIES"> 52 WATERINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="53 SANITAIR"> 53 SANITAIR</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="54 BRANDBESTRIJDINGSINSTALLATIES"> 54 BRANDBESTRIJDINGSINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="55 GASINSTALLATIES"> 55 GASINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="56 PERSLUCHT- EN VACUÜMINSTALLATIES"> 56 PERSLUCHT- EN VACUÜMINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="57 TECHNISCHE INRICHTING"> 57 TECHNISCHE INRICHTING</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="60 VERWARMINGSINSTALLATIES"> 60 VERWARMINGSINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="61 VENTILATIE- EN LUCHTBEHANDELINGSINSTALLATIES"> 61 VENTILATIE- EN LUCHTBEHANDELINGSINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="62 KOELINSTALLATIES"> 62 KOELINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="68 REGELINSTALLATIES"> 68 REGELINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="70 ELEKTROTECHNISCHE INSTALLATIES"> 70 ELEKTROTECHNISCHE INSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="75 COMMUNICATIE- EN BEVEILIGINGSINSTALLATIES"> 75 COMMUNICATIE- EN BEVEILIGINGSINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="78 GEBOUWENBEHEERSYSTEMEN"> 78 GEBOUWENBEHEERSYSTEMEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="80 LIFTINSTALLATIES"> 80 LIFTINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="81 ROLTRAPPEN EN ROLPADEN"> 81 ROLTRAPPEN EN ROLPADEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="82 HIJS- EN HEFINSTALLATIES"> 82 HIJS- EN HEFINSTALLATIES</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="83 GOEDERENTRANSPORT- EN -DISTRIBUTIESYSTEMEN"> 83 GOEDERENTRANSPORT- EN -DISTRIBUTIESYSTEMEN</label><br>
+                        <label><input type="radio" name="hoofdstuk" value="84 GEVELONDERHOUDINSTALLATIES"> 84 GEVELONDERHOUDINSTALLATIES</label><br>
+                    </div>
+                    <button id="hoofdstuk-volgende">Volgende</button>
+                </div>
+            </div> 
+            <!-- Modaal voor het beschrijven van werkzaamheden -->
+            <div id="werkzaamheden-modal" class="modal">
+                <div class="modal-content">
+                    <h2>Welke werkzaamheden heb je uitgevoerd?</h2>
+                    <textarea id="werkzaamheden" rows="4" placeholder="Vul de werkzaamheden in"></textarea>
+                    <button id="werkzaamheden-opslag">Opslaan</button>
+                </div>
+            </div>           
+            
+            <div class="form-group">
+                <label for="starttijd">Starttijd:</label>
+                <input type="time" id="starttijd" name="starttijd">
+            </div>
+            
+            <div class="form-group">
+                <label for="eindtijd">Eindtijd:</label>
+                <input type="time" id="eindtijd" name="eindtijd">
+            </div>
+            
+            <div class="form-group">
+                <label for="pauze">Pauze (in minuten):</label>
+                <input type="number" id="pauze" name="pauze" placeholder="Bijv. 30">
+            </div>
+            
+            <button onclick="berekenUren()">Bereken Uren</button>
+
+            <p id="output">Totaal gewerkte uren: -</p>
+        </div>
+            <div><button onclick="downloadPDF()">Download PDF</button>
+            <button onclick="deelGegevens()">Deel Gegevens</button>
+        </div>
+    </div>
+</body>
+</html>
