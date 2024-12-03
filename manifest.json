@@ -1,7 +1,7 @@
 {
     "name": "Zekerbouw-UrenCalculator",
     "short_name": "UrenCalc",
-    "start_url": "/index.html",
+    "start_url": "/Zekerbouw-urenregistratie-app/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
